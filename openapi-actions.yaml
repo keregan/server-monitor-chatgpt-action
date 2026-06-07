@@ -1,0 +1,79 @@
+openapi: 3.1.0
+
+info:
+  title: Server Monitor API
+  description: API для получения статистики моего Linux-сервера: CPU, RAM, диск, сеть, uptime, Docker-контейнеры и общая проверка состояния.
+  version: 1.0.0
+
+servers:
+  - url: https://your-domain.com/monitor
+
+paths:
+  /health:
+    get:
+      operationId: getMonitorHealth
+      summary: Проверить, работает ли Server Monitor API
+      responses:
+        "200":
+          description: Сервис работает
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  service:
+                    type: string
+
+  /server/stats:
+    get:
+      operationId: getServerStats
+      summary: Получить основную статистику сервера
+      description: Возвращает CPU, RAM, swap, диск, сеть, uptime и краткий статус сервера.
+      security:
+        - MonitorTokenAuth: []
+      responses:
+        "200":
+          description: Статистика сервера
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /server/docker:
+    get:
+      operationId: getDockerContainers
+      summary: Получить список Docker-контейнеров
+      description: Возвращает список Docker-контейнеров, их статус и используемые образы.
+      security:
+        - MonitorTokenAuth: []
+      responses:
+        "200":
+          description: Информация о Docker-контейнерах
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /server/full:
+    get:
+      operationId: getFullServerStatus
+      summary: Получить полную статистику сервера
+      description: Возвращает полную статистику сервера: CPU, RAM, диск, сеть, uptime, Docker-контейнеры, топ процессов и summary.
+      security:
+        - MonitorTokenAuth: []
+      responses:
+        "200":
+          description: Полная статистика сервера
+          content:
+            application/json:
+              schema:
+                type: object
+
+components:
+  securitySchemes:
+    MonitorTokenAuth:
+      type: apiKey
+      in: header
+      name: x-monitor-token
