@@ -1,9 +1,7 @@
 # Server Monitor ChatGPT Action
 
-
 FastAPI-сервис для мониторинга Linux-сервера с интеграцией в ChatGPT через OpenAPI Actions.
 Проект позволяет получать статистику сервера прямо из ChatGPT: CPU, RAM, диск, сеть, uptime, топ процессов и статус Docker-контейнеров.
-
 
 
 ## Возможности
