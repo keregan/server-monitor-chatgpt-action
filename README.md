@@ -65,18 +65,24 @@ GPT Action вызывает endpoint `/server/full`, сервис проверя
 
 ## Переменные окружения 
 
+```env
 SERVER_MONITOR_TOKEN=change_me_to_long_random_token: этот токен используется для защиты API.
+```
 Клиент должен передавать его в header x-monitor-token.
 
 ## Endpoints
 
-GET /health - нужен токен, возвращает информацию о сервере, слежит для получения информации о самом сервере 
+> По умолчанию приложение запускается на порту 8010
+> 
+> Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env file.
 
-По умолчанию приложение запускается на порту 8010 `curl -H "x-monitor-token: your_token_here" http://localhost:8010/health` 
+`GET /health` нужен токен, возвращает информацию о сервере, слежит для получения информации о самом сервере 
 
-Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env file.
+```bash
+curl -H "x-monitor-token: your_token_here" http://localhost:8010/health
+``` 
 
-Ответ:
+Пример ответа:
 ```json
 {
     "status": "ok",
@@ -84,13 +90,13 @@ Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env fi
 }
 ```
 
-GET /server/stats - нужен токен, возвращает информацию о статистике сервера, реализается для проверки активности сервера
+`GET /server/stats` нужен токен, возвращает информацию о статистике сервера, реализается для проверки активности сервера
 
-По умолчанию приложение запускается на порту 8010 `curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/stats` 
+```bash
+curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/stats 
+```
 
-Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env file.
-
-Ответ:
+Пример ответа:
 ```json
 {
     "server_time": "2026-06-13T07:43:16.761893+00:00",
@@ -144,11 +150,11 @@ Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env fi
 
 GET /server/docker - нужен токен, возвращает всю информацию о докерах, запущенных на сервере, реализовывает функционал инфрмационности о докерах 
 
-По умолчанию приложение запускается на порту 8010 `curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/docker` 
+```bash
+curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/docker 
+```
 
-Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env file.
-
-Ответ:
+Пример ответа:
 ```json
 {
     "available": true,
@@ -182,13 +188,13 @@ Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env fi
 }
 ```
 
-GET /server/full - нужен токен, возвращает всю информацию о сервере, реализовывает функционал инфрмационности о сервере 
+`GET /server/full` нужен токен, возвращает всю информацию о сервере, реализовывает функционал инфрмационности о сервере 
 
-По умолчанию приложение запускается на порту 8010 `curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/full` 
+```bash
+curl -H "x-monitor-token: your_token_here" http://localhost:8010/server/full
+```
 
-Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env file.
-
-Ответ:
+Пример ответа:
 ```json
 {
     "server_time": "2026-06-13T07:03:59.114747+00:00",
@@ -258,6 +264,70 @@ Replace your_token_here with the value of SERVER_MONITOR_TOKEN from your .env fi
 }
 ```
 
+## Запуск через Docker Compose
+
+1. Зайдите в папку с проектом
+
+2. Проверьте наличие файлов командой 
+```bash
+ls -la
+```
+
+Вы должны увилеить список файлов:
+```docker-compose.yml
+Dockerfile
+.env
+app/
+requirements.txt
+```
+
+4. Затем запускаем Docker Compose командой 
+```bash
+ docker compose up -d --build
+```
+
+6. Проверка запуска командой 
+```bash
+docker compose ps
+```
+
+В ответ должны увидеть `server-monitor running`
+
+8. Проверить логи 
+```bash
+docker compose logs --tail=100
+```
+В ответ должны увидеть `Uvicorn running on http://0.0.0.0:8010`
+
+9. Проверяем API curl 
+```bash
+http://localhost:8010/health
+```
+
+В ответ должны увидеть
+```json
+{
+  "status": "ok",
+  "service": "server-monitor-api"
+}
+```
+
+9. Для остановки проекта
+```bash
+docker compose down
+```
+
+10. Для перезапуска проекта
+```bash
+docker compose restart
+```
+
+Или что бы полностью пересоздать
+```bash
+docker compose down
+docker compose up -d --build
+```
+
 ## Структура проекта
 
 
@@ -282,4 +352,12 @@ server-monitor-chatgpt-action/
 ├── .gitignore
 
 └── README.md
+```
 
+## Планы дальнейшего развития
+
+1. Реализовать возность настроить уведомления на определённую дату, время или частоту
+2. Разработать возможность получить информачию через telegramm API
+3. Реализовать получение информации о сервере за конкретный промежуток времени
+4. Реализовать возможность на перезагружать сервер в критические моменты в ручную
+5. Реализовать возможность на сервере о перезапуске сервера и получение уведомелние причину и время
