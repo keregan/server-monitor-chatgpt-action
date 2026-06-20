@@ -472,14 +472,14 @@ docker compose up -d --build
 ```text
 server-monitor-chatgpt-action/
 ├── app/
-│   └── main.py
-├── Dockerfile
-├── docker-compose.yml
+│   └── main.py - основной файл FastAPI-приложения, здесь находятся API-эндпоинты для получения информации о сервере
+├── Dockerfile - настройки для работы Docker
+├── docker-compose.yml - файл для запуска проекта через Docker Compose
 ├── requirements.txt
-├── openapi-actions.yaml
-├── .env.example
-├── .gitignore
-└── README.md
+├── openapi-actions.yaml - OpenAPI-схема для подключения проекта к ChatGPT Actions
+├── .env.example - пример файла с переменными окружения. В нём показывается, какие настройки нужны для запуска проекта
+├── .gitignore - файлы, которые будет игнопироватся при отправке в github
+└── README.md - основная документация проекта: описание, запуск, проверка и возможности.
 ```
 
 ## Безопасность
