@@ -475,7 +475,7 @@ server-monitor-chatgpt-action/
 │   └── main.py - основной файл FastAPI-приложения, здесь находятся API-эндпоинты для получения информации о сервере
 ├── Dockerfile - настройки для работы Docker
 ├── docker-compose.yml - файл для запуска проекта через Docker Compose
-├── requirements.txt
+├── requirements.txt - зависимости с их версиями для корректной работы с Doker контейнерами
 ├── openapi-actions.yaml - OpenAPI-схема для подключения проекта к ChatGPT Actions
 ├── .env.example - пример файла с переменными окружения. В нём показывается, какие настройки нужны для запуска проекта
 ├── .gitignore - файлы, которые будет игнопироватся при отправке в github
